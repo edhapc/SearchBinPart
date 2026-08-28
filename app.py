@@ -10,9 +10,14 @@ st.set_page_config(
 )
 
 # ===== CENTERED LOGO =====
-col1, col2, col3 = st.columns([1, 2, 1])
-with col2:
-    st.image("logo.png", width=120)
+st.markdown(
+    """
+    <div style="display: flex; justify-content: center; margin-bottom: 10px;">
+        <img src="logo.png" width="120">
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 # ===== CENTERED TITLE =====
 st.markdown(
