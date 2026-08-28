@@ -9,9 +9,10 @@ st.set_page_config(
 )
 
 # ===== CENTERED LOGO =====
-col1, col2, col3 = st.columns([1, 2, 1])
+# More precise centering
+col1, col2, col3 = st.columns([2.2, 1.2, 2.2])
 with col2:
-    st.image("logo.png", width=120)
+    st.image("logo.png", width=130)
 
 # ===== CENTERED TITLE =====
 st.markdown(
