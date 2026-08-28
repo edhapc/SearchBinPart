@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 
 #st.set_page_config(page_title="Bin Location Finder", page_icon="📦", layout="centered")
-
 st.set_page_config(
     page_title="Bin Location Finder",
     page_icon="logo.png",
@@ -12,7 +11,7 @@ st.set_page_config(
 # ===== CENTERED LOGO =====
 col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
-    st.image("logo.png", width=120)
+    st.image("logo.png", width=120)
 
 # ===== CENTERED TITLE =====
 st.markdown(
