@@ -5,20 +5,26 @@ import pandas as pd
 
 st.set_page_config(
     page_title="Bin Location Finder",
-    page_icon="logo.png",          # ← your logo file
+    page_icon="logo.png",
     layout="centered"
 )
 
-#st.title("📦 Bin Location Finder")
-#st.write("Enter a Part Number to find its bin location.")
-
-# ===== LOGO ABOVE TITLE =====
+# ===== CENTERED LOGO =====
 col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
-    st.image("logo.png", width=100)   # ← change width if needed
+    st.image("logo.png", width=120)
 
-st.title("Bin Location Finder", )      # removed the emoji so it looks cleaner
-st.write("Enter a Part Number to find its bin location.")
+# ===== CENTERED TITLE =====
+st.markdown(
+    "<h1 style='text-align: center; margin-top: 10px; margin-bottom: 5px;'>Bin Location Finder</h1>",
+    unsafe_allow_html=True
+)
+
+# ===== CENTERED SUBTITLE =====
+st.markdown(
+    "<p style='text-align: center; color: #666; margin-bottom: 25px;'>Enter a Part Number to find its bin location.</p>",
+    unsafe_allow_html=True
+)
 
 # ---------- Your Google Sheet (public CSV export) ----------
 # This is the reliable way for public sheets
