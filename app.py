@@ -17,8 +17,8 @@ col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
     st.image("logo.png", width=100)   # ← change width if needed
 
-st.title("Bin Location Finder", layout="centered")      # removed the emoji so it looks cleaner
-st.write("Enter a Part Number to find its bin location.", layout="centered")
+st.title("Bin Location Finder", )      # removed the emoji so it looks cleaner
+st.write("Enter a Part Number to find its bin location.")
 
 # ---------- Your Google Sheet (public CSV export) ----------
 # This is the reliable way for public sheets
