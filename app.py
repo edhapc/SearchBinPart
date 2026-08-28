@@ -9,7 +9,7 @@ st.write("Enter a Part Number to find its bin location.")
 
 # ---------- Connect to Google Sheet ----------
 # Replace the URL below with YOUR Google Sheet URL
-SHEET_URL = "https://docs.google.com/spreadsheets/d/11eP3HCgWvcl1XD5pAv5H1UbM9xX9sfR0/edit?gid=908111469#gid=908111469"
+SHEET_URL = "https://docs.google.com/spreadsheets/d/11eP3HCgWvcl1XD5pAv5H1UbM9xX9sfR0/edit?usp=sharing&ouid=110452783196008988623&rtpof=true&sd=true"
 
 @st.cache_data(ttl=60)  # refreshes every 60 seconds
 def load_data():
