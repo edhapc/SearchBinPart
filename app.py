@@ -15,7 +15,7 @@ st.set_page_config(
 # ===== LOGO ABOVE TITLE =====
 col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
-    st.image("logo.png", height=100, width=100)   # ← change width if needed
+    st.image("logo.png", width=100)   # ← change width if needed
 
 st.title("Bin Location Finder")      # removed the emoji so it looks cleaner
 st.write("Enter a Part Number to find its bin location.")
