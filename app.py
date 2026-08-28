@@ -47,15 +47,24 @@ except Exception as e:
     st.stop()
 
 # ---------- Search ----------
+# ---------- Search with live suggestions ----------
 PART_COL = "Part"
 BIN_COL = "Bin"
 
-part_number = st.text_input("Enter Part Number", placeholder="e.g. 100011")
+# Get all unique part numbers
+all_parts = df[PART_COL].astype(str).unique().tolist()
 
-if part_number:
-    # Case-insensitive partial match
-    mask = df[PART_COL].astype(str).str.contains(part_number.strip(), case=False, na=False)
-    result = df[mask]
+# Create a search box that shows matching suggestions
+selected_part = st.selectbox(
+    "Enter Part Number",
+    options=[""] + sorted(all_parts),
+    index=0,
+    placeholder="Start typing a part number...",
+    help="Type to filter the list"
+)
+
+if selected_part:
+    result = df[df[PART_COL].astype(str) == selected_part]
 
     if not result.empty:
         st.success(f"Found {len(result)} matching part(s)")
@@ -67,7 +76,6 @@ if part_number:
     else:
         st.warning("No matching part number found.")
 else:
-    st.info("Type a part number above to search.")
-
+    st.info("Type or select a part number above to search.")
 #with st.expander("View all data"):
 #    st.dataframe(df, use_container_width=True, hide_index=True)
