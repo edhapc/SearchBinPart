@@ -49,5 +49,5 @@ if part_number:
 else:
     st.info("Type a part number above to search.")
 
-with st.expander("View all data"):
-    st.dataframe(df, use_container_width=True, hide_index=True)
+#with st.expander("View all data"):
+#    st.dataframe(df, use_container_width=True, hide_index=True)
