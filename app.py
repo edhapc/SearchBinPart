@@ -1,7 +1,13 @@
 import streamlit as st
 import pandas as pd
 
-st.set_page_config(page_title="Bin Location Finder", page_icon="📦", layout="centered")
+#st.set_page_config(page_title="Bin Location Finder", page_icon="📦", layout="centered")
+
+st.set_page_config(
+    page_title="Bin Location Finder",
+    page_icon="logo.png",          # ← your logo file
+    layout="centered"
+)
 
 st.title("📦 Bin Location Finder")
 st.write("Enter a Part Number to find its bin location.")
