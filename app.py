@@ -130,21 +130,30 @@ if selected_part:
         if shed:
             st.markdown(f"### 📍 This part is located in **Shed {shed}**")
 
+            # Show the map as IMAGE (this works reliably)
+            image_file = f"Shed{shed}.png"   # or .jpg if you used jpg
+
+            try:
+                st.image(image_file, use_container_width=True)
+            except:
+                st.warning(f"Map image {image_file} not found.")
+
+            # Also keep PDF download
             pdf_file = f"Shed {shed}.pdf"
             try:
                 with open(pdf_file, "rb") as f:
                     st.download_button(
-                        label=f"📄 Download / View Shed {shed} Map (PDF)",
+                        label=f"📄 Download Shed {shed} Map (PDF)",
                         data=f,
                         file_name=pdf_file,
-                        mime="application/pdf",
-                        type="primary"
+                        mime="application/pdf"
                     )
-            except FileNotFoundError:
-                st.warning(f"Map file **{pdf_file}** not found.")
+            except:
+                pass
         else:
             st.info("Could not detect the shed for this bin.")
     else:
         st.warning("No matching part number found.")
 else:
+    st.info("Type or select a part number above to search.")
     st.info("Type or select a part number above to search.")
