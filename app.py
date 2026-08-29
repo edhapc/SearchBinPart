@@ -18,7 +18,6 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# ===== CENTERED SUBTITLE =====
 st.markdown(
     "<p style='text-align: center; color: #666; margin-bottom: 25px;'>Enter a Part Number to find its bin location.</p>",
     unsafe_allow_html=True
@@ -38,8 +37,7 @@ def load_data():
 try:
     df = load_data()
 except Exception as e:
-    st.error("Could not load the Google Sheet. Make sure it is shared as 'Anyone with the link → Viewer'.")
-    st.exception(e)
+    st.error("Could not load the Google Sheet.")
     st.stop()
 
 # ---------- Shed Detection ----------
@@ -48,22 +46,18 @@ def get_shed(bin_code):
         return None
     code = str(bin_code).strip().upper()
 
-    # Shed 4
     shed4 = ["DA", "DB", "DC", "DD", "DE", "DF", "DG", "DH", "DI", "DJ", "DK", "DM", "DO", "DT", "DN", "QB-04"]
     if any(code.startswith(p) for p in shed4):
         return 4
 
-    # Shed 3
     shed3 = ["CA", "CB", "CC", "CD", "CE", "CF", "CG", "CH", "CI", "CJ", "CK", "QB-03"]
     if any(code.startswith(p) for p in shed3):
         return 3
 
-    # Shed 2
     shed2 = ["BA", "BB", "BC", "BF", "BG", "BH", "BI", "BJ", "BK", "BL", "QB-02", "CNC"]
     if any(code.startswith(p) for p in shed2):
         return 2
 
-    # Shed 1
     shed1 = ["AA", "AB", "AC", "AD", "AE", "AF", "AG", "AH", "AI", "AJ", "AK", "AL", "AN", "AO", "ST"]
     if any(code.startswith(p) for p in shed1):
         return 1
@@ -74,14 +68,13 @@ def get_shed(bin_code):
 PART_COL = "Part"
 BIN_COL = "Bin"
 
-all_parts = df[PART_COL].astype(str).unique().tolist()
+all_parts = sorted(df[PART_COL].astype(str).unique().tolist())
 
 selected_part = st.selectbox(
     "Enter Part Number",
-    options=[""] + sorted(all_parts),
+    options=[""] + all_parts,
     index=0,
-    placeholder="Start typing a part number...",
-    help="Type to filter the list"
+    placeholder="Start typing a part number..."
 )
 
 if selected_part:
@@ -102,26 +95,28 @@ if selected_part:
         if shed:
             st.markdown(f"### 📍 This part is located in **Shed {shed}**")
 
-            pdf_file = f"Shed {shed}.pdf"
+            # Show the map as IMAGE (this works reliably)
+            image_file = f"Shed{shed}.png"   # or .jpg if you used jpg
 
             try:
+                st.image(image_file, use_container_width=True)
+            except:
+                st.warning(f"Map image {image_file} not found.")
+
+            # Also keep PDF download
+            pdf_file = f"Shed {shed}.pdf"
+            try:
                 with open(pdf_file, "rb") as f:
-                    pdf_bytes = f.read()
-
-                st.download_button(
-                    label=f"📄 Download / View Shed {shed} Map (PDF)",
-                    data=pdf_bytes,
-                    file_name=pdf_file,
-                    mime="application/pdf",
-                    type="primary"
-                )
-
-                st.caption("Click the button above to open or download the shed map.")
-
-            except FileNotFoundError:
-                st.warning(f"Map file **{pdf_file}** not found. Please upload it to the GitHub repository.")
+                    st.download_button(
+                        label=f"📄 Download Shed {shed} Map (PDF)",
+                        data=f,
+                        file_name=pdf_file,
+                        mime="application/pdf"
+                    )
+            except:
+                pass
         else:
-            st.info("Could not automatically detect the shed for this bin.")
+            st.info("Could not detect the shed for this bin.")
     else:
         st.warning("No matching part number found.")
 else:
