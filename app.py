@@ -40,12 +40,6 @@ if not st.session_state.logged_in:
     st.stop()
 
 # ====================== AFTER LOGIN ======================
-
-# Logout button
-if st.button("Logout"):
-    st.session_state.logged_in = False
-    st.rerun()
-
 # ===== Right aligned LOGO =====
 col1, col2, col3 = st.columns([6, 1, 1])
 with col3:
