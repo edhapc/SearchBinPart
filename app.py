@@ -46,10 +46,12 @@ if st.button("Logout"):
     st.session_state.logged_in = False
     st.rerun()
 
-# ===== CENTERED LOGO =====
-col1, col2, col3 = st.columns([2.2, 1.2, 2.2])
-with col2:
-    st.image("logo.png", width=130)
+# ===== Right aligned LOGO =====
+col1, col2, col3 = st.columns([6, 1, 1])
+with col3:
+    if st.button("Logout"):
+        st.session_state.logged_in = False
+        st.rerun()
 
 # ===== CENTERED TITLE =====
 st.markdown(
