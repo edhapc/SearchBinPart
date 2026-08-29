@@ -7,6 +7,45 @@ st.set_page_config(
     layout="centered"
 )
 
+# ====================== LOGIN ======================
+def check_login(username, password):
+    try:
+        usernames = st.secrets["credentials"]["usernames"]
+        passwords = st.secrets["credentials"]["passwords"]
+        if username in usernames:
+            idx = usernames.index(username)
+            return passwords[idx] == password
+    except:
+        return False
+    return False
+
+# Initialize session state
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+
+if not st.session_state.logged_in:
+    st.markdown("<h2 style='text-align: center;'>Login</h2>", unsafe_allow_html=True)
+    
+    with st.form("login_form"):
+        username = st.text_input("Username")
+        password = st.text_input("Password", type="password")
+        submit = st.form_submit_button("Login")
+
+        if submit:
+            if check_login(username, password):
+                st.session_state.logged_in = True
+                st.rerun()
+            else:
+                st.error("Incorrect username or password")
+    st.stop()
+
+# ====================== AFTER LOGIN ======================
+
+# Logout button
+if st.button("Logout"):
+    st.session_state.logged_in = False
+    st.rerun()
+
 # ===== CENTERED LOGO =====
 col1, col2, col3 = st.columns([2.2, 1.2, 2.2])
 with col2:
@@ -95,26 +134,18 @@ if selected_part:
         if shed:
             st.markdown(f"### 📍 This part is located in **Shed {shed}**")
 
-            # Show the map as IMAGE (this works reliably)
-            image_file = f"Shed{shed}.png"   # or .jpg if you used jpg
-
-            try:
-                st.image(image_file, use_container_width=True)
-            except:
-                st.warning(f"Map image {image_file} not found.")
-
-            # Also keep PDF download
             pdf_file = f"Shed {shed}.pdf"
             try:
                 with open(pdf_file, "rb") as f:
                     st.download_button(
-                        label=f"📄 Download Shed {shed} Map (PDF)",
+                        label=f"📄 Download / View Shed {shed} Map (PDF)",
                         data=f,
                         file_name=pdf_file,
-                        mime="application/pdf"
+                        mime="application/pdf",
+                        type="primary"
                     )
-            except:
-                pass
+            except FileNotFoundError:
+                st.warning(f"Map file **{pdf_file}** not found.")
         else:
             st.info("Could not detect the shed for this bin.")
     else:
