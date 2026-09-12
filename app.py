@@ -27,7 +27,7 @@ if "last_activity" not in st.session_state:
     st.session_state.last_activity = time.time()
 
 # ----- Auto logout after 30 minutes of inactivity -----
-TIMEOUT_MINUTES = 30          # ← Change this number if you want a different time
+TIMEOUT_MINUTES = 300          # ← Change this number if you want a different time
 
 if st.session_state.logged_in:
     current_time = time.time()
