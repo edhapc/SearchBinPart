@@ -7,22 +7,6 @@ st.set_page_config(
     page_icon="logo.png",
     layout="centered"
 )
-# Hide Streamlit style (menu + footer + bottom-right icons)
-hide_streamlit_style = """
-    <style>
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    header {visibility: hidden;}
-    [data-testid="stToolbar"] {display: none !important;}
-    [data-testid="stDecoration"] {display: none !important;}
-    [data-testid="stStatusWidget"] {display: none !important;}
-    .stDeployButton {display: none !important;}
-    button[kind="header"] {display: none !important;}
-    #stDecoration {display: none !important;}
-    div[data-testid="stToolbar"] {display: none !important;}
-    </style>
-"""
-st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 # ====================== LOGIN ======================
 def check_login(username, password):
