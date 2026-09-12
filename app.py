@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import time
 
 st.set_page_config(
     page_title="Bin Location Finder",
@@ -22,6 +23,22 @@ def check_login(username, password):
 # Initialize session state
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
+if "last_activity" not in st.session_state:
+    st.session_state.last_activity = time.time()
+
+# ----- Auto logout after 30 minutes of inactivity -----
+TIMEOUT_MINUTES = 30          # ← Change this number if you want a different time
+
+if st.session_state.logged_in:
+    current_time = time.time()
+    if current_time - st.session_state.last_activity > TIMEOUT_MINUTES * 60:
+        st.session_state.logged_in = False
+        st.session_state.last_activity = current_time
+        st.warning("You have been logged out due to inactivity.")
+        st.rerun()
+    else:
+        # Update last activity time on every interaction
+        st.session_state.last_activity = current_time
 
 if not st.session_state.logged_in:
     st.markdown("<h2 style='text-align: center;'>Login</h2>", unsafe_allow_html=True)
@@ -30,17 +47,17 @@ if not st.session_state.logged_in:
         username = st.text_input("Username")
         password = st.text_input("Password", type="password")
         submit = st.form_submit_button("Login")
-
         if submit:
             if check_login(username, password):
                 st.session_state.logged_in = True
+                st.session_state.last_activity = time.time()
                 st.rerun()
             else:
                 st.error("Incorrect username or password")
     st.stop()
 
 # ====================== AFTER LOGIN ======================
-# ===== Right aligned LOGO =====
+# Logout button on the right
 col1, col2, col3 = st.columns([6, 1, 1])
 with col3:
     if st.button("Logout"):
@@ -52,7 +69,6 @@ st.markdown(
     "<h1 style='text-align: center; margin-top: 10px; margin-bottom: 5px;'>Bin Location Finder</h1>",
     unsafe_allow_html=True
 )
-
 st.markdown(
     "<p style='text-align: center; color: #666; margin-bottom: 25px;'>Enter a Part Number to find its bin location.</p>",
     unsafe_allow_html=True
@@ -130,15 +146,14 @@ if selected_part:
         if shed:
             st.markdown(f"### 📍 This part is located in **Shed {shed}**")
 
-            # Show the map as IMAGE (this works reliably)
-            image_file = f"Shed{shed}.png"   # or .jpg if you used jpg
-
+            # Show the map as IMAGE
+            image_file = f"Shed{shed}.png"
             try:
                 st.image(image_file, use_container_width=True)
             except:
                 st.warning(f"Map image {image_file} not found.")
 
-            # Also keep PDF download
+            # PDF download
             pdf_file = f"Shed {shed}.pdf"
             try:
                 with open(pdf_file, "rb") as f:
