@@ -156,4 +156,3 @@ if selected_part:
         st.warning("No matching part number found.")
 else:
     st.info("Type or select a part number above to search.")
-    st.info("Type or select a part number above to search.")
