@@ -26,9 +26,8 @@ if "logged_in" not in st.session_state:
 if "last_activity" not in st.session_state:
     st.session_state.last_activity = time.time()
 
-# ----- Auto logout after 30 minutes of inactivity -----
-TIMEOUT_MINUTES = 300          # ← Change this number if you want a different time
-
+# ----- Auto logout after inactivity -----
+TIMEOUT_MINUTES = 30          # ← Change this number if you want a different time
 if st.session_state.logged_in:
     current_time = time.time()
     if current_time - st.session_state.last_activity > TIMEOUT_MINUTES * 60:
@@ -37,7 +36,6 @@ if st.session_state.logged_in:
         st.warning("You have been logged out due to inactivity.")
         st.rerun()
     else:
-        # Update last activity time on every interaction
         st.session_state.last_activity = current_time
 
 if not st.session_state.logged_in:
@@ -96,28 +94,24 @@ def get_shed(bin_code):
     if pd.isna(bin_code):
         return None
     code = str(bin_code).strip().upper()
-
     shed4 = ["DA", "DB", "DC", "DD", "DE", "DF", "DG", "DH", "DI", "DJ", "DK", "DM", "DO", "DT", "DN", "QB-04"]
     if any(code.startswith(p) for p in shed4):
         return 4
-
     shed3 = ["CA", "CB", "CC", "CD", "CE", "CF", "CG", "CH", "CI", "CJ", "CK", "QB-03"]
     if any(code.startswith(p) for p in shed3):
         return 3
-
     shed2 = ["BA", "BB", "BC", "BF", "BG", "BH", "BI", "BJ", "BK", "BL", "QB-02", "CNC"]
     if any(code.startswith(p) for p in shed2):
         return 2
-
     shed1 = ["AA", "AB", "AC", "AD", "AE", "AF", "AG", "AH", "AI", "AJ", "AK", "AL", "AN", "AO", "ST"]
     if any(code.startswith(p) for p in shed1):
         return 1
-
     return None
 
 # ---------- Search ----------
 PART_COL = "Part"
-BIN_COL = "Bin"
+DESC_COL = "Description"          # ← Added
+BIN_COL  = "Bin"
 
 all_parts = sorted(df[PART_COL].astype(str).unique().tolist())
 
@@ -130,29 +124,30 @@ selected_part = st.selectbox(
 
 if selected_part:
     result = df[df[PART_COL].astype(str) == selected_part]
-
+    
     if not result.empty:
         st.success(f"Found {len(result)} matching part(s)")
-
+        
+        # Show Part + Description + Bin
         st.dataframe(
-            result[[PART_COL, BIN_COL]],
+            result[[PART_COL, DESC_COL, BIN_COL]],
             use_container_width=True,
             hide_index=True
         )
-
+        
         first_bin = result[BIN_COL].iloc[0]
         shed = get_shed(first_bin)
-
+        
         if shed:
             st.markdown(f"### 📍 This part is located in **Shed {shed}**")
-
+            
             # Show the map as IMAGE
             image_file = f"Shed{shed}.png"
             try:
                 st.image(image_file, use_container_width=True)
             except:
                 st.warning(f"Map image {image_file} not found.")
-
+            
             # PDF download
             pdf_file = f"Shed {shed}.pdf"
             try:
