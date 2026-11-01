@@ -72,6 +72,26 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+# Custom CSS to style the dataframe headers
+st.markdown("""
+<style>
+/* Make dataframe headers bold + white */
+[data-testid="stDataFrame"] thead th {
+    background-color: #1f2937 !important;   /* dark background */
+    color: white !important;
+    font-weight: 700 !important;
+    font-size: 15px !important;
+    text-align: left !important;
+}
+
+/* Optional: make the whole table a bit nicer */
+[data-testid="stDataFrame"] {
+    border: 1px solid #374151;
+    border-radius: 8px;
+}
+</style>
+""", unsafe_allow_html=True)
+
 # ---------- Google Sheet ----------
 SHEET_ID = "11eP3HCgWvcl1XD5pAv5H1UbM9xX9sfR0"
 GID = "908111469"
