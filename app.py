@@ -75,19 +75,21 @@ st.markdown(
 # Custom CSS to style the dataframe headers
 st.markdown("""
 <style>
-/* Make dataframe headers bold + white */
-[data-testid="stDataFrame"] thead th {
-    background-color: #1f2937 !important;   /* dark background */
-    color: white !important;
+/* Stronger selector for dataframe headers */
+div[data-testid="stDataFrame"] thead tr th,
+div[data-testid="stDataFrame"] th {
+    background-color: #1f2937 !important;
+    color: #ffffff !important;
     font-weight: 700 !important;
     font-size: 15px !important;
     text-align: left !important;
+    border-bottom: 2px solid #4b5563 !important;
 }
 
-/* Optional: make the whole table a bit nicer */
-[data-testid="stDataFrame"] {
-    border: 1px solid #374151;
-    border-radius: 8px;
+/* Optional nice touches */
+div[data-testid="stDataFrame"] {
+    border: 1px solid #374151 !important;
+    border-radius: 8px !important;
 }
 </style>
 """, unsafe_allow_html=True)
